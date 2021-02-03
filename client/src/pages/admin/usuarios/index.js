@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
   },
   paper: {
     padding: theme.spacing(2),
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
- 
+
 }));
 
 
@@ -54,59 +54,71 @@ export default function UsuariosListagem() {
 
   const [usuarios, setUsuarios] = useState([]);
 
-  useEffect(() =>{
-    
-    async function loadUsuarios(){
+  useEffect(() => {
+
+    async function loadUsuarios() {
       const response = await api.get("/api/usuarios");
       setUsuarios(response.data)
     }
     loadUsuarios();
-  },[])
-  
+  }, []);
+
+  async function handleDelete(id) {
+    if (window.confirm("Deseja realmente excluir este usuário?")) {
+      var result = await api.delete('/api/usuarios/' + id);
+      if (result.status === 200) {
+        window.location.href = '/admin/usuarios';
+      } else {
+        alert('Ocorreu um erro. Por favor, tente novamente!');
+      }
+    }
+  }
+
   return (
     <div className={classes.root}>
-      
-      <MenuAdmin title={'USUÁRIOS'}/>
+
+      <MenuAdmin title={'USUÁRIOS'} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
-            <Paper className={classes.paper}>
+            <Button style={{marginBotton:10}} variant="contained" color="primary" href={'/admin/usuarios/cadastrar/'}>Cadastrar</Button>
+              <Paper className={classes.paper}>
                 <h2>Listagem de Usuários</h2>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={12}>
-                  <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Nome</TableCell>
-                          <TableCell align="center">Email</TableCell>
-                          <TableCell align="center">Tipo</TableCell>
-                          <TableCell align="center">Data de Cadastro</TableCell>
-                          <TableCell align="right">Opções</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {usuarios.map((row) => (
-                          <TableRow key={row._id}>
-                            <TableCell component="th" scope="row">
-                              {row.nome_usuario}
-                            </TableCell>
-                            <TableCell align="center">{row.email_usuario}</TableCell>
-                            <TableCell align="center">{row.tipo_usuario===1?<Chip label="Administrador"color="primary"/>:<Chip label="Funcionário"color="secondary"/>}</TableCell>
-                            <TableCell align="center">{new Date(row.createdAt).toLocaleString('pt-br')}</TableCell>
-                            <TableCell align="right">
-                            <ButtonGroup aria-label="outlined primary button group">
-                              <Button color="primary">Atualizar</Button>
-                              <Button color="secondary">Excluir</Button>
-                            </ButtonGroup>
-                            </TableCell>
+                    <TableContainer component={Paper}>
+                      <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Nome</TableCell>
+                            <TableCell align="center">Email</TableCell>
+                            <TableCell align="center">Tipo</TableCell>
+                            <TableCell align="center">Data de Cadastro</TableCell>
+                            <TableCell align="center">Opções</TableCell>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                          {usuarios.map((row) => (
+                            <TableRow key={row._id}>
+                              <TableCell component="th" scope="row">
+                                {row.nome_usuario}
+                              </TableCell>
+                              <TableCell align="center">{row.email_usuario}</TableCell>
+                              <TableCell align="center">{row.tipo_usuario === 1 ? <Chip label="Administrador" color="primary" /> : <Chip label="Funcionário" color="secondary" />}</TableCell>
+                              <TableCell align="center">{new Date(row.createdAt).toLocaleString('pt-br')}</TableCell>
+                              <TableCell align="right">
+                                <ButtonGroup aria-label="outlined primary button group">
+                                  <Button variant="contained" color="primary" href={'/admin/usuarios/editar/' + row._id}>Editar</Button>
+                                  <Button variant="contained" color="secondary" onClick={() => handleDelete(row._id)}>Excluir</Button>
+                                </ButtonGroup>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                   </Grid>
                 </Grid>
               </Paper>

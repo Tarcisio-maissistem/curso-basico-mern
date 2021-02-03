@@ -1,4 +1,4 @@
-import React,{useState}from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
@@ -18,51 +18,53 @@ import Button from '@material-ui/core/Button';
 import api from '../../../services/api'
 
 const useStyles = makeStyles((theme) => ({
-  root: {display: 'flex',},
-  title: {flexGrow: 1,},
+  root: { display: 'flex', },
+  title: { flexGrow: 1, },
   appBarSpacer: theme.mixins.toolbar,
-  content: {flexGrow: 1,height: '100vh',overflow: 'auto',},
-  container: {paddingTop: theme.spacing(4),paddingBottom: theme.spacing(4),},
-  paper: {padding: 35,display: 'flex',overflow: 'auto',flexDirection: 'column',},
-  formControl:{width:'100%'}
+  content: { flexGrow: 1, height: '100vh', overflow: 'auto', },
+  container: { paddingTop: theme.spacing(4), paddingBottom: theme.spacing(4), },
+  paper: { padding: 35, display: 'flex', overflow: 'auto', flexDirection: 'column', },
+  formControl: { width: '100%' },
+  btnSucess:{ backgroundColor:"green", color: "#fff", "&:hover":{backgroundColor:"#12b912"}}
 }));
 
 export default function UsuarioCadastrar() {
   const classes = useStyles();
 
-  const [nome , setNome] = useState('');
-  const [email , setEmail] = useState('');
-  const [senha , setSenha] = useState('');
-  const [tipo , setTipo] = useState('');
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [tipo, setTipo] = useState('');
 
-  async function handleSubmit(){
+  async function handleSubmit() {
 
     const data = {
-      nome_usuario:nome,
-      email_usuario:email,
-      senha_usuario:senha,
-      tipo_usuario:tipo}
+      nome_usuario: nome,
+      email_usuario: email,
+      senha_usuario: senha,
+      tipo_usuario: tipo
+    }
 
-      if(nome!==''&&email!==''&&senha!==''&&tipo!==''){
-        const response = await api.post('/api/usuarios',data);
+    if (nome !== '' && email !== '' && senha !== '' && tipo !== '') {
+      const response = await api.post('/api/usuarios', data);
 
-        if(response.status===200){
-          window.location.href='/admin/usuarios'
-        }else{
-          alert('Erro ao cadastrar o usuário!');
-        }
-      }else{
-        alert('Por favor, preencha todos os dados!');
+      if (response.status === 200) {
+        window.location.href = '/admin/usuarios'
+      } else {
+        alert('Erro ao cadastrar o usuário!');
       }
+    } else {
+      alert('Por favor, preencha todos os dados!');
+    }
 
-     
+
 
   }
-  
+
   return (
     <div className={classes.root}>
-      
-      <MenuAdmin title={'USUÁRIOS'}/>
+
+      <MenuAdmin title={'USUÁRIOS'} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
@@ -95,20 +97,20 @@ export default function UsuarioCadastrar() {
                       onChange={e => setEmail(e.target.value)}
                     />
                   </Grid>
-                
+
                   <Grid item xs={12} sm={3}>
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="labelTipo">Tipo</InputLabel>
-                    <Select
-                      labelId="labelTipo"
-                      id="tipo"
-                      value={tipo}
-                      onChange={e => setTipo(e.target.value)}
-                    >
-                      <MenuItem value={1}>Administrador</MenuItem>
-                      <MenuItem value={2}>Funcionário</MenuItem>
-                    </Select>
-                  </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="labelTipo">Tipo</InputLabel>
+                      <Select
+                        labelId="labelTipo"
+                        id="tipo"
+                        value={tipo}
+                        onChange={e => setTipo(e.target.value)}
+                      >
+                        <MenuItem value={1}>Administrador</MenuItem>
+                        <MenuItem value={2}>Funcionário</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={3}>
                     <TextField
@@ -124,14 +126,14 @@ export default function UsuarioCadastrar() {
                     />
                   </Grid>
                   <Grid item xs={12} sm={12}>
-                  <Button variant="contained" onClick={handleSubmit} color="primary">
-                    Salvar
+                    <Button variant="contained" onClick={handleSubmit} className={classes.btnSucess}>
+                      Salvar
                   </Button>
                   </Grid>
                 </Grid>
               </Paper>
             </Grid>
-            
+
           </Grid>
           <Box pt={4}>
             <Footer />
