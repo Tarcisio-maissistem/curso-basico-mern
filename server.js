@@ -27,5 +27,5 @@ app.use(routes);
 
 
 app.listen(port,function(){
-    console.log(`Server runing on port ${port}`)
+    console.log(`Server rodando na porta ${port}`)
 });

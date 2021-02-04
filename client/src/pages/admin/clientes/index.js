@@ -19,9 +19,8 @@ import api from '../../../services/api';
 
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import AddIcon from '@material-ui/icons/Add';
 
-//import Chip from '@material-ui/core/Chip';
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,25 +49,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function ProdutosListagem() {
+export default function ClientesListagem() {
   const classes = useStyles();
 
-  const [produtos, setprodutos] = useState([]);
+  const [clientes, setclientes] = useState([]);
 
   useEffect(() => {
 
-    async function loadprodutos() {
-      const response = await api.get("/api/produtos");
-      setprodutos(response.data)
+    async function loadclientes() {
+      const response = await api.get("/api/clientes");
+      setclientes(response.data)
     }
-    loadprodutos();
+    loadclientes();
   }, []);
 
   async function handleDelete(id) {
-    if (window.confirm("Deseja realmente excluir este Produto?")) {
-      var result = await api.delete('/api/produtos/' + id);
+    if (window.confirm("Deseja realmente excluir este cliente?")) {
+      var result = await api.delete('/api/clientes/' + id);
       if (result.status === 200) {
-        window.location.href = '/admin/produtos';
+        window.location.href = '/admin/clientes';
       } else {
         alert('Ocorreu um erro. Por favor, tente novamente!');
       }
@@ -78,43 +77,40 @@ export default function ProdutosListagem() {
   return (
     <div className={classes.root}>
 
-      <MenuAdmin title={'PRODUTOS'} />
+      <MenuAdmin title={'CLIENTES'} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
-              <Button style={{ marginBotton: 10 }} variant="contained" color="primary" href={'/admin/produtos/cadastrar/'}>
-                <AddIcon />
-                Cadastrar
-                </Button>
+              <Button style={{ marginBotton: 10 }} variant="contained" color="primary" href={'/admin/clientes/cadastrar/'}>Cadastrar</Button>
               <Paper className={classes.paper}>
-                <h2>Listagem de Produtos</h2>
+                <h2>Listagem de Clientes</h2>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={12}>
                     <TableContainer component={Paper}>
                       <Table className={classes.table} aria-label="simple table">
                         <TableHead>
                           <TableRow>
-                            <TableCell>Nome</TableCell>
-                            <TableCell align="center">Valor</TableCell>
-                            <TableCell align="center">Qtd</TableCell>
-                            <TableCell align="center">Data Cadastro</TableCell>
-                            <TableCell align="center">Opções</TableCell>
+                            <TableCell><b>Nome</b></TableCell>
+                            <TableCell align="center" ><b>CPF/CNPJ</b></TableCell>
+                            <TableCell align="center"><b>Telefone</b></TableCell>
+                            <TableCell align="center"><b>Data Cadastro</b></TableCell>
+                            <TableCell align="center"><b>Opções</b></TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {produtos.map((row) => (
+                          {clientes.map((row) => (
                             <TableRow key={row._id}>
                               <TableCell component="th" scope="row">
-                                {row.nome_produto}
+                                {row.nome_fantasia}
                               </TableCell>
-                              <TableCell align="center">{'R$ ' + row.preco_produto}</TableCell>
-                              <TableCell align="center">{row.qtd_produto}</TableCell>
+                              <TableCell align="center">{row.cpf_cnpj}</TableCell>
+                              <TableCell align="center">{row.telefone}</TableCell>
                               <TableCell align="center">{new Date(row.createdAt).toLocaleString('pt-br')}</TableCell>
                               <TableCell align="center">
                                 <ButtonGroup aria-label="outlined primary button group">
-                                  <Button variant="contained" color="primary" href={'/admin/produtos/editar/' + row._id}>Editar</Button>
+                                  <Button variant="contained" color="primary" href={'/admin/clientes/editar/' + row._id}>Editar</Button>
                                   <Button variant="contained" color="secondary" onClick={() => handleDelete(row._id)}>Excluir</Button>
                                 </ButtonGroup>
                               </TableCell>

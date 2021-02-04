@@ -21,6 +21,8 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import Chip from '@material-ui/core/Chip';
+import {getNomeTipo, getNomeTipoLabel} from '../../../functions/static_data';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,7 +85,10 @@ export default function UsuariosListagem() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
-            <Button style={{marginBotton:10}} variant="contained" color="primary" href={'/admin/usuarios/cadastrar/'}>Cadastrar</Button>
+              <Button style={{ marginBotton: 10 }} variant="contained" color="primary" href={'/admin/usuarios/cadastrar/'}>
+                <AddIcon />
+                Cadastrar
+                </Button>
               <Paper className={classes.paper}>
                 <h2>Listagem de Usuários</h2>
                 <Grid container spacing={3}>
@@ -106,7 +111,7 @@ export default function UsuariosListagem() {
                                 {row.nome_usuario}
                               </TableCell>
                               <TableCell align="center">{row.email_usuario}</TableCell>
-                              <TableCell align="center">{row.tipo_usuario === 1 ? <Chip label="Administrador" color="primary" /> : <Chip label="Funcionário" color="secondary" />}</TableCell>
+                              <TableCell align="center"><Chip label={getNomeTipo(row.tipo_usuario)} color={getNomeTipoLabel(row.tipo_usuario)} /></TableCell>
                               <TableCell align="center">{new Date(row.createdAt).toLocaleString('pt-br')}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup aria-label="outlined primary button group">

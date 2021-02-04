@@ -4,13 +4,17 @@ import Box from '@material-ui/core/Box';
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+//import Paper from '@material-ui/core/Paper';
 
 import MenuAdmin from '../../../components/menu-admin';
-
-import ImgAdmin from '../../../assets/img/admin.png'
+import { getTipoUsuario } from '../../../services/auth';
 
 import Footer from '../../../components/footer-admin';
+
+import DashAdmin from './admin';
+import DashGerente from './gerente';
+import DashFuncionario from './funcionario';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +42,16 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+function getDashboard() {
+  if (getTipoUsuario() === '1') {
+    return <DashAdmin />
+  } else if (getTipoUsuario() === '2') {
+    return <DashGerente />
+  } else {
+    return <DashFuncionario />
+  }
+}
+
 export default function Dashboard() {
   const classes = useStyles();
 
@@ -49,7 +63,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <img src={ImgAdmin} />
+            {getDashboard()}
           </Grid>
           <Box pt={4}>
             <Footer />
