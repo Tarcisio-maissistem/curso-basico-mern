@@ -10,4 +10,7 @@
     -Cadastro e Edição 
 
 *Cadastro de Produtos*
-    -Cadastro e Edição 
+    -Cadastro e Edição
+
+*Rodar o Projeto*
+>>> npm run dev
